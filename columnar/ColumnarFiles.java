@@ -65,7 +65,7 @@ public class ColumnarFiles {
         } catch (HFException | HFBufMgrException | HFDiskMgrException | IOException e) {
             throw new RuntimeException("Error creating header file",e);
         } catch (InvalidSlotNumberException | InvalidTupleSizeException e) {
-            throw new RuntimeException("Erro fetching record count",e);
+            throw new RuntimeException("Error fetching record count",e);
         }
     }
 }
