@@ -15,6 +15,7 @@ public class ColumnarFiles {
     private final Heapfile deleteFile;
 
     private final Heapfile headerFile;
+
     private final ColumnFile[] columnFiles;
     private final  int numColumns;
 
@@ -67,5 +68,18 @@ public class ColumnarFiles {
         } catch (InvalidSlotNumberException | InvalidTupleSizeException e) {
             throw new RuntimeException("Error fetching record count",e);
         }
+    }
+
+    public ColumnFile getColumnFile(int columnNo) {
+        return columnFiles[columnNo];
+    }
+
+
+    public Heapfile getTidFile() {
+        return tidFile;
+    }
+
+    public Heapfile getDeleteFile() {
+        return deleteFile;
     }
 }
