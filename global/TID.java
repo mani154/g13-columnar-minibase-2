@@ -13,10 +13,10 @@ public class TID {
 
     boolean isDeleted =  false;
 
-    public TID(int numRIDs, int position, RID[] rids) {
+    public TID(int numRIDs, int position) {
         this.numRIDs = numRIDs;
         this.position = position;
-        this.rids = rids;
+        this.rids = new RID[numRIDs];
     }
 
     public TID(byte[] data) {
@@ -47,8 +47,11 @@ public class TID {
         return position;
     }
 
-    public RID[] getRids() {
-        return rids;
+    public void setRid(int colNo,RID rid) {
+        rids[colNo] = rid;
+    }
+    public RID getRid(int colNo) {
+        return rids[colNo];
     }
 
     public boolean isDeleted() {
