@@ -39,7 +39,8 @@ public class ColumnarFiles {
         for(int i = 0 ; i< numColumns;i++) {
             columnFiles[i] = new ColumnFile(name+"."+i, columnNames[i], attrTypes[i]);
             try {
-                headerFile.insertRecord(columnFiles[i].getBytes());
+                RID rid = headerFile.insertRecord(columnFiles[i].getBytes());
+                columnFiles[i].setRid(rid);
             } catch (InvalidSlotNumberException | InvalidTupleSizeException | SpaceNotAvailableException | HFException |
                      HFBufMgrException | HFDiskMgrException | IOException e) {
                 throw new RuntimeException("Error inserting records",e);
@@ -62,12 +63,24 @@ public class ColumnarFiles {
 
             for (int i = 0; i < numColumns; i++) {
                 columnFiles[i] = new ColumnFile(scan.getNext(rid).getTupleByteArray());
+                columnFiles[i].setRid(rid);
             }
         } catch (HFException | HFBufMgrException | HFDiskMgrException | IOException e) {
             throw new RuntimeException("Error creating header file",e);
         } catch (InvalidSlotNumberException | InvalidTupleSizeException e) {
             throw new RuntimeException("Error fetching record count",e);
         }
+    }
+
+    public boolean createBtreeIndex(int columnNo) {
+        try {
+            columnFiles[columnNo].setHasBtree(true);
+            headerFile.updateRecord(columnFiles[columnNo].getRid(), columnFiles[columnNo].getTuple());
+            return ColumnarFileUtils.createBtreeIndex(columnFiles[columnNo], tidFile);
+        } catch (Exception e) {
+            throw new RuntimeException("Error updating headerfile record",e);
+        }
+
     }
 
     public ColumnFile getColumnFile(int columnNo) {
