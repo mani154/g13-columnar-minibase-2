@@ -1,6 +1,7 @@
 package columnar;
 
 import global.AttrType;
+import global.RID;
 import heap.*;
 
 import java.io.IOException;
@@ -14,6 +15,8 @@ public class ColumnFile {
             new AttrType(AttrType.attrInteger),
             new AttrType(AttrType.attrInteger)
     };
+
+    private RID rid;
 
     private final String name;
 
@@ -94,7 +97,7 @@ public class ColumnFile {
         return attrType;
     }
 
-    public byte[] getBytes() {
+    public Tuple getTuple() {
 
         short[] strSizes = new short[] {
                 (short) name.length(),
@@ -117,6 +120,19 @@ public class ColumnFile {
             throw new RuntimeException("Error setting field",e);
         }
 
+        return tuple;
+    }
+
+    public byte[] getBytes() {
+        Tuple tuple = getTuple();
         return tuple.getTupleByteArray();
+    }
+
+    public RID getRid() {
+        return rid;
+    }
+
+    public void setRid(RID rid) {
+        this.rid = rid;
     }
 }
