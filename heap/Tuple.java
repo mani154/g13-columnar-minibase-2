@@ -69,6 +69,28 @@ public class Tuple implements GlobalConst{
       tuple_length = length;
     //  fldCnt = getShortValue(offset, data);
    }
+
+    public Tuple(byte[] data) throws IOException {
+        this.data = data;
+        tuple_offset = 0;
+        tuple_length = data.length;
+        initHeaders();
+    }
+
+
+    public void initHeaders() throws IOException {
+        int pos = tuple_offset;
+        fldCnt = Convert.getShortValue(pos, data);
+
+        fldOffset = new short[fldCnt+1];
+        //Adding 2 bytes for field count, 2 bytes for the data offset position
+        pos+=2;
+        for(int i = 0;i<=fldCnt; i++)
+        {
+            fldOffset[i] = Convert.getShortValue(pos, data);
+            pos+=2;
+        }
+    }
    
    /** Constructor(used as tuple copy)
     * @param fromTuple   a byte array which contains the tuple
