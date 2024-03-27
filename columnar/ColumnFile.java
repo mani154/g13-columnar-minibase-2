@@ -15,21 +15,29 @@ public class ColumnFile {
             new AttrType(AttrType.attrInteger)
     };
 
-    String name;
+    private final String name;
 
-    String columnName;
+    private final Heapfile dataFile;
 
-    AttrType attrType;
+    private final String columnName;
 
-    boolean hasBtree = false;
+    private final AttrType attrType;
 
-    boolean hasBitmap = false;
+    private boolean hasBtree = false;
+
+    private boolean hasBitmap = false;
 
 
     public ColumnFile(String columnFileName, String columnName, AttrType attrType) {
         this.name = columnFileName;
         this.columnName = columnName;
         this.attrType = attrType;
+
+        try {
+            dataFile = new Heapfile(name);
+        } catch (HFException | HFBufMgrException | HFDiskMgrException | IOException e) {
+            throw new RuntimeException("error creating data file",e);
+        }
     }
 
     public ColumnFile(byte[] data) {
@@ -40,6 +48,13 @@ public class ColumnFile {
             attrType = new AttrType(tuple.getIntFld(3));
             hasBtree = tuple.getIntFld(4) == 1;
             hasBitmap = tuple.getIntFld(5) == 1;
+
+            try {
+                dataFile = new Heapfile(name);
+            } catch (HFException | HFBufMgrException | HFDiskMgrException | IOException e) {
+                throw new RuntimeException("error creating data file",e);
+            }
+
         } catch (IOException e) {
             throw new RuntimeException("Error creating tuple",e);
         } catch (FieldNumberOutOfBoundException e) {
@@ -48,11 +63,7 @@ public class ColumnFile {
     }
 
     public Heapfile getFile() {
-        try {
-            return new Heapfile(name);
-        } catch (HFException | HFBufMgrException | HFDiskMgrException | IOException e) {
-            throw new RuntimeException("Error getting/creating new heapfile",e);
-        }
+       return dataFile;
     }
 
     public boolean hasBtree() {
