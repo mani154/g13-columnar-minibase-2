@@ -82,4 +82,8 @@ public class ColumnarFiles {
     public Heapfile getDeleteFile() {
         return deleteFile;
     }
+
+    public Scan openColumScan(int column) throws IOException, InvalidTupleSizeException{
+        return columnFiles[column].dataFile.openScan();
+    }
 }

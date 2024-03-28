@@ -17,7 +17,7 @@ public class ColumnFile {
 
     private final String name;
 
-    private final Heapfile dataFile;
+    public final Heapfile dataFile;
 
     private final String columnName;
 
