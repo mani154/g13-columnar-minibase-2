@@ -1,13 +1,9 @@
 package bitmap;
 
-import global.AttrType;
-import global.Convert;
 import global.RID;
-import global.TID;
 import heap.*;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class BMFileScan {
 

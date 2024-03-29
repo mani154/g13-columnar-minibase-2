@@ -1,6 +1,8 @@
 package tests;
 
 import bitmap.BitmapFile;
+import columnar.ColumnarFiles;
+import columnar.ValueInt;
 import global.*;
 
 public class BitmapTest extends TestDriver {
@@ -13,15 +15,23 @@ public class BitmapTest extends TestDriver {
     protected boolean test1() {
         boolean isTestOkay = false;
         try {
-            BitmapFile bitmapFile = new BitmapFile("testBitmap", null); // Assuming ColumnarFile is not required for this test
+            /*
+             * Testing BitmapFile's insert and delete method
+             */
+            String columnName = "Test Column Int";
+            String[] columnNames = {"A", "B", "C", "D"};
+            AttrType[] attrType = new AttrType[]{new AttrType(1)};
+            ColumnarFiles columnFile = new ColumnarFiles(columnName, columnNames, attrType, 4);
+            
+            BitmapFile bitmapFile = new BitmapFile("testBitmap", columnFile, 1, new ValueInt(1));
             // Insert a bit at position 10
             isTestOkay = bitmapFile.insert(10);
-            // Check if bit at position 10 is set
+            // Check if bit at position 10 is set to 1
             isTestOkay = (bitmapFile.getBit(new PageId(1), 10) == 1);
 
             // Delete the bit at position 10
             isTestOkay = bitmapFile.delete(10);
-            // Check if bit at position 10 is unset
+            // Check if bit at position 10 is set to 0
             isTestOkay = (bitmapFile.getBit(new PageId(1), 10) == 0);
 
         } catch (Exception e) {
@@ -35,16 +45,19 @@ public class BitmapTest extends TestDriver {
     protected boolean test2() {
         boolean isTestOkay = false;
         try {
-            BitmapFile bitmapFile = new BitmapFile("testBitmap", null); // Assuming ColumnarFile is not required for this test
+            /* 
+             * Testing BitmapFile's set method
+            */
+            BitmapFile bitmapFile = new BitmapFile("testBitmap", null); 
 
             // Set bit at position 20 to 1
             isTestOkay = bitmapFile.set(20, 1);
-            // Check if bit at position 20 is set
+            // Check if bit at position 20 is set to 1
             isTestOkay = (bitmapFile.getBit(new PageId(1), 20) == 1);
 
             // Set bit at position 20 to 0
             isTestOkay = bitmapFile.set(20, 0);
-            // Check if bit at position 20 is unset
+            // Check if bit at position 20 is set to 0
             isTestOkay = (bitmapFile.getBit(new PageId(1), 20) == 0);
 
         } catch (Exception e) {

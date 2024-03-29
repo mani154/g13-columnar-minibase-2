@@ -2,10 +2,7 @@ package bitmap;
 
 import java.io.IOException;
 
-import javax.management.RuntimeErrorException;
-
 import global.AttrType;
-import global.Convert;
 import global.PageId;
 import heap.FieldNumberOutOfBoundException;
 import heap.InvalidTupleSizeException;

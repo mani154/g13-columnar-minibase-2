@@ -43,11 +43,6 @@ public class BMPage extends HFPage {
    */
   protected PageId curPage = new PageId();
 
-  /**
-   * Length of the value in the slot
-   */
-  private static int valueLength = 0;
-
   public BMPage() throws ConstructPageException {
     try {
 			Page newPage = new Page();
@@ -105,7 +100,7 @@ public class BMPage extends HFPage {
     Convert.setIntValue(INVALID_PAGE, PREV_PAGE_POS, data);
     Convert.setIntValue(INVALID_PAGE, NEXT_PAGE_POS, data);
     
-    short freeSpace = (short) (MAX_SPACE - IP_FIXED_DATA);    // amount of space available
+    short freeSpace = (short) (MAX_SPACE - IP_FIXED_DATA);
     Convert.setShortValue (freeSpace, FREE_SPACE_POS, data);
   }
 
@@ -167,11 +162,6 @@ public class BMPage extends HFPage {
 		Convert.setShortValue(slotsUsed, SLOTS_USED_POS, data);
 	}
 
-  // public void setFreeSpace(short freeSpace) throws IOException {
-  //   Convert.setShortValue(freeSpace, FREE_SPACE_POS, data);
-  // }
-
-
   public void setBit(int position, byte bit) throws IOException {
     if(position > slotsUsed) {
       throw new RuntimeException("Slot unused, fragmentation");
@@ -193,38 +183,6 @@ public class BMPage extends HFPage {
     data[targetPos] = bit;
     slotsUsed++;
     setUsedSlots(slotsUsed);
-    // Convert.setShortValue(freeSpace, FREE_SPACE_POS, data);
   }
-
-  // void setColNoInSlot(int colNo) throws IOException {
-  //   setSlot(1, colNo, 0);
-  // }
-
-  // void setSlotByValue(ValueClass value) throws IOException
-	// {
-	//   setSlotByValue(2, value, 0); 
-	//   if(value instanceof ValueString) {
-	//     valueLength = (((ValueString)value).getValue()).length()+2;
-	//   }
-	// }
-
-  /**
-   * sets slot contents based on type of value
-   * @param       slotno  the slot number 
-   * @param 	value  value type of slot
-   * @param	offset  offset of record
-   * @exception IOException I/O errors
-   */
-//   public void setSlotByValue(int slotno, ValueClass value, int offset)
-//   throws IOException
-//   {
-//     int position = DPFIXED + slotno * SIZE_OF_SLOT;
-//     if(value instanceof ValueInt)
-//       { Convert.setIntValue(((ValueInt)value).getValue().intValue(), position, data); }
-//     else if(value instanceof ValueString)
-//     { Convert.setStrValue(((ValueString)value).getValue(), position, data);	}
-    
-//     Convert.setShortValue((short)offset, position+2, data);
-//   }
 
 }

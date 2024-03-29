@@ -66,7 +66,7 @@ public class BitmapFile extends IndexFile implements GlobalConst {
                     bmPage.isSpaceAvailable() ? 0 : 1 , 
                     MAX_RECORD_COUNT).convertToTuple().getTupleByteArray());
                 
-//                    unpinPage(bmPage.curPage, false);
+                    unpinPage(bmPage.curPage, false);
             }
             columnScan.closescan();
         } catch (Exception e) {
@@ -195,11 +195,6 @@ public class BitmapFile extends IndexFile implements GlobalConst {
 	    throw new FreePageException(e,"");
       } 
       
-    }
-    
-
-    private void handleOperationException(String operation, Exception e) {
-        System.err.println("Error during " + operation + ": " + e.getMessage());
     }
 
     @Override
