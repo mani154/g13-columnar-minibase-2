@@ -40,13 +40,7 @@ public class BMDataPageInfo {
             atuple.setIntFld(1, recCount);
             atuple.setIntFld(2, isFull);
             atuple.setIntFld(3, pageId.pid);
-        } catch (InvalidTypeException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidTupleSizeException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (FieldNumberOutOfBoundException e) {
+        } catch (InvalidTypeException | InvalidTupleSizeException | IOException | FieldNumberOutOfBoundException e) {
             throw new RuntimeException(e);
         }
         return atuple;

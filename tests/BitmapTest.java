@@ -1,7 +1,7 @@
 package tests;
 
 import bitmap.BitmapFile;
-import columnar.ColumnarFiles;
+import columnar.ColumnarFile;
 import columnar.ValueInt;
 import global.*;
 
@@ -20,10 +20,12 @@ public class BitmapTest extends TestDriver {
              */
             String columnName = "Test Column Int";
             String[] columnNames = {"A", "B", "C", "D"};
-            AttrType[] attrType = new AttrType[]{new AttrType(1)};
-            ColumnarFiles columnFile = new ColumnarFiles(columnName, columnNames, attrType, 4);
+            AttrType[] attrType = new AttrType[]{new AttrType(1), new AttrType(1), new AttrType(1), new AttrType(1)};
+            ColumnarFile columnFile = new ColumnarFile(columnName, columnNames, attrType, 4);
             
             BitmapFile bitmapFile = new BitmapFile("testBitmap", columnFile, 1, new ValueInt(1));
+
+            // BitmapFile bitmapFile = new BitmapFile("testBitmap", null);
             // Insert a bit at position 10
             isTestOkay = bitmapFile.insert(10);
             // Check if bit at position 10 is set to 1
@@ -48,7 +50,13 @@ public class BitmapTest extends TestDriver {
             /* 
              * Testing BitmapFile's set method
             */
-            BitmapFile bitmapFile = new BitmapFile("testBitmap", null); 
+            String columnName = "Test Column Int";
+            String[] columnNames = {"A", "B", "C", "D"};
+            AttrType[] attrType = new AttrType[]{new AttrType(1), new AttrType(1), new AttrType(1), new AttrType(1)};
+            ColumnarFile columnFile = new ColumnarFile(columnName, columnNames, attrType, 4);
+            BitmapFile bitmapFile = new BitmapFile("testBitmap", columnFile, 1, new ValueInt(1));
+
+            // BitmapFile bitmapFile = new BitmapFile("testBitmap", null);
 
             // Set bit at position 20 to 1
             isTestOkay = bitmapFile.set(20, 1);
@@ -70,6 +78,8 @@ public class BitmapTest extends TestDriver {
     @Override
     protected boolean runAllTests() {
         boolean _passAll = OK;
+
+        SystemDefs sysdef = new SystemDefs(dbpath,100,100,"Clock");
 
         //Running test1() to test6()
         if (!test1()) {

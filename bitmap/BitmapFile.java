@@ -1,7 +1,7 @@
 package bitmap;
 
 import btree.*;
-import columnar.ColumnarFiles;
+import columnar.ColumnarFile;
 import columnar.ValueInt;
 import columnar.ValueString;
 import global.*;
@@ -17,7 +17,7 @@ public class BitmapFile extends IndexFile implements GlobalConst {
 
 
     // Constructor for the scenario where file already exists
-	public BitmapFile(String filename, ColumnarFiles columnFile)
+	public BitmapFile(String filename, ColumnarFile columnFile)
 			throws GetFileEntryException,
 			PinPageException,
 			ConstructPageException,
@@ -29,7 +29,7 @@ public class BitmapFile extends IndexFile implements GlobalConst {
 	}
 
 	// Constructor for creating a new file, when it doesn't exists
-	public BitmapFile(String filename, ColumnarFiles columnFile, int colNo, ValueClass value)
+	public BitmapFile(String filename, ColumnarFile columnFile, int colNo, ValueClass value)
             throws Exception {
         this.filename = filename;
         this.headerFile = new Heapfile(filename + ".hdr");
@@ -38,7 +38,7 @@ public class BitmapFile extends IndexFile implements GlobalConst {
         accessColumn(columnFile, colNo, value);
     }
 
-    private void accessColumn(ColumnarFiles columnFile, int colNo, ValueClass value) throws Exception {
+    private void accessColumn(ColumnarFile columnFile, int colNo, ValueClass value) throws Exception {
         try {
             Scan columnScan = columnFile.openColumnScan(colNo);
             Tuple tuple = new Tuple();
@@ -107,9 +107,10 @@ public class BitmapFile extends IndexFile implements GlobalConst {
 
         RID rid = new RID();
         Scan scan = headerFile.openScan();
+        int pos = 0;
 
-        while (position > (currentDataPage*MAX_RECORD_COUNT)) {
-            tuple = scan.getNext(rid);
+        while (pos++ < position) {
+            scan.getNext(rid);
         }
 
         tuple = scan.getNext(rid);
