@@ -6,7 +6,7 @@ import heap.*;
 
 import java.io.IOException;
 
-public class ColumnarFiles {
+public class ColumnarFile {
 
     private final String name;
 
@@ -19,7 +19,7 @@ public class ColumnarFiles {
     private final ColumnFile[] columnFiles;
     private final  int numColumns;
 
-    public ColumnarFiles(
+    public ColumnarFile(
             String name,
             String[] columnNames,
             AttrType[] attrTypes,
@@ -47,7 +47,7 @@ public class ColumnarFiles {
         }
     }
 
-    public ColumnarFiles(String name) {
+    public ColumnarFile(String name) {
         this.name = name;
         try {
             headerFile = new Heapfile(name + ".hdr");
