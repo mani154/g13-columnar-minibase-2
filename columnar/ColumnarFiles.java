@@ -70,10 +70,22 @@ public class ColumnarFiles {
         }
     }
 
+    /**
+     * Note: This is 0-indexed
+     * @param columnNo
+     * @return ColumnFile at the given index in which it was created.
+     */
     public ColumnFile getColumnFile(int columnNo) {
         return columnFiles[columnNo];
     }
 
+    public int getNumColumns() {
+        return numColumns;
+    }
+
+    public Heapfile getHeaderFile() {
+        return headerFile;
+    }
 
     public Heapfile getTidFile() {
         return tidFile;
